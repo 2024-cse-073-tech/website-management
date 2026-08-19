@@ -14,7 +14,7 @@ COPY --chown=node:node src ./src
 COPY --chown=node:node public ./public
 COPY --chown=node:node scripts ./scripts
 COPY --chown=node:node docs ./docs
-COPY --chown=node:node README.md .env.example ./
+COPY --chown=node:node README.md ./
 
 RUN mkdir -p /app/data /app/exports && chown -R node:node /app/data /app/exports
 
