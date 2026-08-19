@@ -1,0 +1,25 @@
+{
+  "name": "flowmate-workspace",
+  "version": "3.6.4",
+  "description": "FlowMate v3.6.4: optimized large-board drag/drop performance, responsive Kanban columns, reliable password visibility, concise project names, and local reset-code recovery.",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "reset": "node scripts/reset.js",
+    "seed": "node scripts/reset.js",
+    "test": "node --test tests/*.test.js",
+    "start:prod": "NODE_ENV=production node src/server.js",
+    "db:init": "node scripts/init-db.js"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "dependencies": {
+    "nodemailer": "^7.0.5",
+    "@libsql/client": "^0.17.4",
+    "mammoth": "^1.9.1",
+    "pdf-parse": "^1.1.1"
+  }
+}

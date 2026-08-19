@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#29283f">
+  <title>FlowMate Workspace</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/theme-init.js"></script>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="app" class="app-root">
+    <div id="loadingScreen" class="boot-screen">
+      <div class="brand-mark large"><span></span><span></span></div>
+      <div class="boot-dots"><i></i><i></i><i></i></div>
+    </div>
+
+    <section id="authScreen" class="auth-screen hidden" aria-label="Authentication">
+      <div class="auth-center-wrap">
+        <div class="auth-card auth-card-centered">
+          <div class="auth-brand-centered"><div class="brand-mark"><span></span><span></span></div><strong>FlowMate</strong></div>
+          <div id="inviteAuthHint" class="invite-auth-hint hidden">You have a workspace invitation. Sign in or create an account to join it.</div>
+          <h2 id="authTitle">Welcome back</h2>
+          <p id="authSubtitle">Sign in to continue to your workspace</p>
+          <div class="auth-tabs" role="tablist">
+            <button id="signInTab" class="active" type="button">Sign in</button>
+            <button id="signUpTab" type="button">Sign up</button>
+          </div>
+          <form id="signInForm" class="auth-form">
+            <label>Email or username<input name="identifier" autocomplete="username" required placeholder="you@example.com"></label>
+            <label>Password
+              <div class="password-input-wrap">
+                <input id="signInPassword" name="password" type="password" autocomplete="current-password" required placeholder="••••••••">
+                <button class="password-toggle" type="button" data-password-toggle data-password-target="signInPassword" aria-controls="signInPassword" aria-label="Show password" aria-pressed="false">Show</button>
+              </div>
+            </label>
+            <div class="auth-inline-actions"><span></span><button id="forgotBtn" class="text-btn" type="button">Forgot password?</button></div>
+            <button class="primary-btn auth-submit" type="submit">Sign in</button>
+          </form>
+          <form id="signUpForm" class="auth-form hidden">
+            <label>Full name<input name="full_name" autocomplete="name" required placeholder="Your name"></label>
+            <label>Username<input name="username" autocomplete="username" required placeholder="yourname"></label>
+            <label>Email<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+            <label>Password
+              <div class="password-input-wrap">
+                <input id="signUpPassword" name="password" type="password" autocomplete="new-password" minlength="8" required placeholder="8+ characters">
+                <button class="password-toggle" type="button" data-password-toggle data-password-target="signUpPassword" aria-controls="signUpPassword" aria-label="Show password" aria-pressed="false">Show</button>
+              </div>
+            </label>
+            <small>Use at least 8 characters.</small>
+            <button class="primary-btn auth-submit" type="submit">Create account</button>
+          </form>
+          <form id="resetForm" class="auth-form hidden">
+            <label>Email<input id="resetEmail" name="email" type="email" required placeholder="you@example.com"></label>
+            <button id="sendResetBtn" class="primary-btn" type="button">Get reset code</button>
+            <div id="resetCodeNotice" class="reset-code-notice hidden" role="status" aria-live="polite">
+              <div class="reset-code-copy">
+                <span>Reset code</span>
+                <strong id="resetCodeValue">------</strong>
+                <button id="copyResetCodeBtn" class="reset-code-copy-btn" type="button">Copy</button>
+              </div>
+              <small>This code is shown on screen only while running FlowMate locally in development mode.</small>
+            </div>
+            <div id="resetFields" class="reset-fields hidden">
+              <label>6-digit code<input id="resetCodeInput" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required></label>
+              <label>New password
+                <div class="password-input-wrap">
+                  <input id="resetNewPassword" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="8+ characters" required>
+                  <button class="password-toggle" type="button" data-password-toggle data-password-target="resetNewPassword" aria-controls="resetNewPassword" aria-label="Show password" aria-pressed="false">Show</button>
+                </div>
+              </label>
+              <button class="primary-btn" type="submit">Reset password</button>
+            </div>
+            <button id="backToSignIn" class="text-btn" type="button">Back to sign in</button>
+          </form>
+          <div id="authError" class="form-error hidden" role="alert"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="onboardingScreen" class="onboarding-screen hidden">
+      <div class="onboarding-card onboarding-choice-card">
+        <div class="brand-lockup"><div class="brand-mark"><span></span><span></span></div><strong>FlowMate</strong></div>
+        <span class="step-label">WELCOME TO FLOWMATE</span>
+        <h1>How do you want to work?</h1>
+        <p>You can create a team workspace, join one you were invited to, or start personally without creating an organization.</p>
+
+        <div class="onboarding-options">
+          <button id="chooseCreateWorkspace" class="onboarding-option" type="button">
+            <span class="onboarding-option-icon">＋</span><span><strong>Create a workspace</strong><small>Start a team or organization workspace.</small></span><b>›</b>
+          </button>
+          <button id="chooseJoinWorkspace" class="onboarding-option" type="button">
+            <span class="onboarding-option-icon">↗</span><span><strong>Join a workspace</strong><small>Accept an email/username invitation or paste an invite link.</small></span><b>›</b>
+          </button>
+          <button id="continuePersonalBtn" class="onboarding-option personal-option" type="button">
+            <span class="onboarding-option-icon">◎</span><span><strong>Continue personally</strong><small>Use tasks, Docs, AI and planning without setting up an organization.</small></span><b>›</b>
+          </button>
+        </div>
+
+        <div id="createWorkspacePanel" class="onboarding-panel hidden">
+          <div class="panel-heading"><button class="panel-back" data-onboarding-back type="button">←</button><div><strong>Create a workspace</strong><small>You can invite people later.</small></div></div>
+          <form id="workspaceForm">
+            <label>Workspace name<input name="name" required minlength="2" maxlength="120" placeholder="e.g. Acme Studio"></label>
+            <button class="primary-btn large" type="submit">Create Workspace</button>
+          </form>
+        </div>
+
+        <div id="joinWorkspacePanel" class="onboarding-panel hidden">
+          <div class="panel-heading"><button class="panel-back" data-onboarding-back type="button">←</button><div><strong>Join a workspace</strong><small>Invitations sent to your email or username appear below.</small></div></div>
+          <div id="pendingInvitations" class="pending-invitations"></div>
+          <div class="invite-token-join">
+            <label>Invite link or token<input id="inviteTokenInput" placeholder="Paste the invitation link here"></label>
+            <button id="joinByTokenBtn" class="secondary-btn" type="button">Join with link</button>
+          </div>
+        </div>
+
+        <p class="onboarding-footnote">You can create or join more workspaces later from the workspace switcher.</p>
+        <button id="onboardingLogout" class="text-btn" type="button">Sign out</button>
+      </div>
+    </section>
+
+    <section id="workspaceShell" class="workspace-shell hidden">
+      <header class="global-topbar">
+        <div class="topbar-left">
+          <button id="mobileSidebarBtn" class="top-icon mobile-only" aria-label="Open navigation">☰</button>
+          <div class="mini-brand"><div class="brand-mark tiny"><span></span><span></span></div></div>
+        </div>
+        <button id="commandSearchBtn" class="command-search"><span class="search-icon">⌕</span><span>Search</span><kbd>Ctrl K</kbd></button>
+        <div class="top-actions">
+          <button id="aiButton" class="ai-btn"><span>✦</span> AI</button>
+          <button id="globalNewBtn" class="new-btn"><span>＋</span> New</button>
+          <button id="topTimerBtn" class="top-icon" title="Time tracking">◷</button>
+          <button id="topInboxBtn" class="top-icon badge-wrap" title="Inbox">♧<b id="topInboxBadge" class="badge hidden">0</b></button>
+          <button id="themeBtn" class="top-icon" title="Theme">☾</button>
+          <button id="profileBtn" class="avatar-btn" aria-label="Account"><span id="topAvatar" class="avatar-main">U</span><span id="topStatusDot" class="avatar-status-dot" title="Work status"></span></button>
+        </div>
+      </header>
+
+      <aside class="global-rail" aria-label="Global navigation">
+        <button class="rail-btn active" data-global="home" title="Home"><span>⌂</span><small>Home</small></button>
+        <button class="rail-btn" data-global="inbox" title="Inbox"><span>♧</span><small>Inbox</small></button>
+        <button class="rail-btn" data-global="chat" title="Chat"><span>◌</span><small>Chat</small></button>
+        <button class="rail-btn" data-global="docs" title="Docs"><span>▱</span><small>Docs</small></button>
+        <button class="rail-btn" data-global="dashboard" title="Dashboards"><span>▦</span><small>Dashboards</small></button>
+        <button class="rail-btn" data-global="people" title="People"><span>♙</span><small>People</small></button>
+        <div class="rail-spacer"></div>
+        <button class="rail-btn" data-global="settings" title="Settings"><span>⚙</span><small>Settings</small></button>
+      </aside>
+
+      <aside id="spacesSidebar" class="spaces-sidebar">
+        <div class="workspace-switcher">
+          <button id="workspaceSwitcherBtn" class="workspace-switcher-btn">
+            <span id="workspaceInitial" class="workspace-initial">W</span>
+            <span class="workspace-switcher-copy"><strong id="workspaceName">Workspace</strong><small id="workspaceRole">member</small></span>
+            <span>⌄</span>
+          </button>
+          <button id="sidebarCreateBtn" class="sidebar-plus" title="Create">＋</button>
+        </div>
+        <div class="sidebar-scroll">
+          <div class="sidebar-section favorites-section">
+            <div class="sidebar-heading"><span>Favorites</span></div>
+            <button class="sidebar-link" data-special="all"><span class="link-icon">☆</span><span>All Tasks</span></button>
+            <button class="sidebar-link" data-special="me"><span class="link-icon">✓</span><span>My Tasks</span></button>
+          </div>
+          <div class="sidebar-section projects-section">
+            <div class="sidebar-heading projects-heading">
+              <button id="projectsOverviewBtn" class="sidebar-heading-main" type="button"><span>Projects</span><span id="projectsOverviewCount" class="sidebar-heading-count">0</span></button>
+              <button id="newAiProjectSidebarBtn" title="New AI project">＋</button>
+            </div>
+            <div id="projectsTree" class="projects-tree hidden"></div>
+          </div>
+          <div class="sidebar-section spaces-section">
+            <div class="sidebar-heading"><span>Spaces</span><div><button id="spaceSearchBtn" title="Search spaces">⌕</button><button id="newSpaceBtn" title="New Space">＋</button></div></div>
+            <div id="spacesTree" class="spaces-tree"></div>
+          </div>
+        </div>
+        <div class="sidebar-bottom">
+          <button id="invitePeopleBtn"><span>♙</span><span>Invite people</span></button>
+        </div>
+      </aside>
+
+      <main id="workspaceMain" class="workspace-main">
+        <div id="contentMount" class="content-mount"></div>
+      </main>
+      <button id="mobileBackdrop" class="mobile-backdrop hidden" aria-label="Close navigation"></button>
+    </section>
+  </div>
+
+  <div id="taskDrawerBackdrop" class="drawer-backdrop hidden"></div>
+  <aside id="taskDrawer" class="task-drawer hidden" aria-label="Task details"></aside>
+
+  <dialog id="entityDialog" class="modal-dialog">
+    <form method="dialog" id="entityForm" class="modal-card">
+      <div class="modal-header"><div><small id="entityEyebrow">CREATE</small><h3 id="entityTitle">Create</h3></div><button value="cancel" class="icon-close" aria-label="Close">×</button></div>
+      <div id="entityFields" class="modal-body"></div>
+      <div class="modal-footer"><button value="cancel" class="secondary-btn">Cancel</button><button id="entitySubmit" value="default" class="primary-btn">Create</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="commandDialog" class="command-dialog">
+    <div class="command-card">
+      <div class="command-input-wrap"><span>⌕</span><input id="commandInput" placeholder="Search tasks, Docs, people or type a command…" autocomplete="off"><kbd>ESC</kbd></div>
+      <div id="commandResults" class="command-results"></div>
+    </div>
+  </dialog>
+
+  <dialog id="aiDialog" class="modal-dialog ai-dialog">
+    <form method="dialog" class="modal-card wide-modal" id="aiForm">
+      <div class="modal-header"><div><small>FLOWMATE AI</small><h3><span class="ai-spark">✦</span> Ask AI</h3></div><button value="cancel" class="icon-close">×</button></div>
+      <div class="modal-body">
+        <label>What do you want help with?<textarea id="aiPrompt" rows="5" placeholder="e.g. Break this project into a practical launch plan"></textarea></label>
+        <div id="aiResult" class="ai-result hidden"></div>
+      </div>
+      <div class="modal-footer"><button value="cancel" class="secondary-btn">Close</button><button id="askAiBtn" value="default" class="primary-btn" type="submit">✦ Generate</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="aiProjectDialog" class="modal-dialog ai-project-dialog">
+    <div class="modal-card ai-project-card">
+      <div class="modal-header"><div><small>FLOWMATE AI PLANNER</small><h3><span class="ai-spark">✦</span> Project Brief → Full Plan</h3></div><button id="closeAiProjectBtn" class="icon-close" type="button">×</button></div>
+      <div class="modal-body ai-project-body">
+        <section id="aiProjectBriefStep" class="ai-project-step">
+          <div class="ai-planner-intro"><strong>Give AI the project brief. It will plan the work for you.</strong><p>AI will understand the brief, create 6 main workstreams for a normal project, distribute manager ownership across suitable available people, divide each main task into 7–12 detailed subtasks when the scope supports it, use the wider team for execution, and break heavy subtasks into smaller nested execution steps. Nothing becomes live until you approve the reviewed plan.</p></div>
+          <div class="ai-brief-input-block">
+            <div class="ai-brief-label-row"><label for="aiProjectBrief">Project brief</label><span>Paste text or add files</span></div>
+            <textarea id="aiProjectBrief" rows="10" minlength="10" maxlength="50000" placeholder="Paste the complete project brief, goals, required features, deadline, constraints, client expectations, deliverables, or any other context here…"></textarea>
+            <div id="aiBriefDropzone" class="ai-brief-dropzone" tabindex="0" role="button" aria-label="Upload project brief files">
+              <input id="aiBriefFileInput" type="file" hidden multiple accept=".pdf,.docx,.txt,.md,.markdown,.rtf,.csv,.json,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown">
+              <div class="ai-drop-icon">⇧</div>
+              <div><strong>Drop project brief files here</strong><p>PDF, Word (.docx), Markdown, TXT, RTF, CSV or JSON · text will be added to the brief above</p></div>
+              <button id="aiBriefUploadBtn" class="secondary-btn" type="button">＋ Upload files</button>
+            </div>
+            <div id="aiBriefFileList" class="ai-brief-file-list hidden"></div>
+          </div>
+          <div id="aiPlannerPeopleHint" class="ai-planner-people-hint"></div>
+        </section>
+        <section id="aiProjectReviewStep" class="ai-project-step hidden">
+          <div class="ai-plan-review-head">
+            <div><span id="aiPlanProviderBadge" class="ai-provider-badge">AI</span><h4>Review the proposed project plan</h4><p>Everything starts as Pending review. Review all 3 levels: main tasks, subtasks, and nested steps. Accept, reject, edit, or regenerate each item before creating the project.</p></div>
+            <div class="ai-plan-review-stats" id="aiPlanReviewStats"></div>
+          </div>
+          <div class="ai-plan-project-fields">
+            <label>Project name<input id="aiPlanProjectName" maxlength="160"></label>
+            <label>Project summary<textarea id="aiPlanProjectSummary" rows="3" maxlength="10000"></textarea></label>
+          </div>
+          <div id="aiPlanReviewMount" class="ai-plan-review"></div>
+        </section>
+      </div>
+      <div class="modal-footer ai-project-footer">
+        <div id="aiBriefActions" class="ai-project-actions"><button id="cancelAiProjectBtn" class="secondary-btn" type="button">Cancel</button><button id="generateAiProjectBtn" class="primary-btn" type="button">✦ Generate full plan</button></div>
+        <div id="aiReviewActions" class="ai-project-actions hidden"><button id="backAiProjectBtn" class="secondary-btn" type="button">← Brief</button><button id="rejectAllAiPlanBtn" class="secondary-btn danger-text" type="button">Reject all</button><button id="acceptAllAiPlanBtn" class="secondary-btn" type="button">Accept all</button><button id="regenerateAiProjectBtn" class="secondary-btn" type="button">↻ Regenerate</button><button id="commitAiProjectBtn" class="primary-btn" type="button">✓ Create accepted plan</button></div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="manualBreakdownDialog" class="modal-dialog manual-breakdown-dialog">
+    <div class="modal-card manual-breakdown-card">
+      <div class="modal-header"><div><small>MANUAL TASK BREAKDOWN</small><h3>Divide work across your team</h3></div><button id="closeManualBreakdownBtn" class="icon-close" type="button">×</button></div>
+      <div class="modal-body manual-breakdown-body">
+        <div id="manualBreakdownParent" class="manual-parent-summary"></div>
+        <div class="manual-breakdown-toolbar"><div><strong>Subtasks & nested steps</strong><p>Add as many useful work items as needed and choose the person responsible for each one.</p></div><button id="manualAddSubtaskBtn" class="secondary-btn" type="button">＋ Add subtask</button></div>
+        <div id="manualBreakdownRows" class="manual-breakdown-rows"></div>
+      </div>
+      <div class="modal-footer"><button id="cancelManualBreakdownBtn" class="secondary-btn" type="button">Cancel</button><button id="saveManualBreakdownBtn" class="primary-btn" type="button">✓ Create breakdown</button></div>
+    </div>
+  </dialog>
+
+  <dialog id="profileDialog" class="modal-dialog">
+    <form method="dialog" class="modal-card" id="profileForm">
+      <div class="modal-header"><div><small>ACCOUNT</small><h3>Profile & settings</h3></div><button value="cancel" class="icon-close">×</button></div>
+      <div id="profileContent" class="modal-body"></div>
+    </form>
+  </dialog>
+
+  <dialog id="statusDialog" class="modal-dialog status-dialog">
+    <div class="modal-card">
+      <div class="modal-header"><div><small>WORK STATUS</small><h3>Set your status</h3></div><button id="closeStatusBtn" class="icon-close" type="button">×</button></div>
+      <div class="modal-body status-modal-body">
+        <div id="statusPresetGrid" class="status-preset-grid"></div>
+        <div id="customStatusFields" class="custom-status-fields hidden">
+          <label>Emoji<input id="customStatusEmoji" maxlength="8" value="💬" placeholder="💬"></label>
+          <label>Status message<input id="customStatusLabel" maxlength="50" placeholder="e.g. Client visit"></label>
+        </div>
+        <label>Note / message<input id="statusNote" maxlength="120" placeholder="Optional note, e.g. Back at 3 PM"></label>
+        <label>Clear status after
+          <select id="statusExpiry">
+            <option value="never">Don't clear</option>
+            <option value="1h">1 hour</option>
+            <option value="4h">4 hours</option>
+            <option value="today">Today</option>
+            <option value="week">1 week</option>
+          </select>
+        </label>
+        <p class="status-help">AI planning uses this status: On Leave / DND / Travelling people are avoided, while Busy / Meeting / Focus people are lower priority.</p>
+      </div>
+      <div class="modal-footer"><button id="clearStatusBtn" class="secondary-btn" type="button">Clear to Free</button><button id="saveStatusBtn" class="primary-btn" type="button">Save status</button></div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+  <script src="/password-toggle.js" defer></script>
+  <script src="/app.js" defer></script>
+</body>
+</html>

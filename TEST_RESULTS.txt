@@ -1,0 +1,18 @@
+FlowMate v3.5.3 verification
+=============================
+
+Command: npm test
+Result: 37/37 tests passed
+
+Additional syntax check:
+- node --check public/app.js: PASS
+
+v3.5.3 regression coverage includes:
+- First + last word initials for avatar fallbacks
+- Full-name home greeting
+- Existing multi-project persistence
+- All Tasks hierarchy
+- Custom +View support
+- AI planner hierarchy / assignment
+- Work status / realtime chat / theme persistence
+- No legacy sample Project Management project
